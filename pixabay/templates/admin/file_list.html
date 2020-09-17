@@ -1,0 +1,118 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% block title %}Image Processing {% endblock %}
+{% block body %}
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <!-- Navbar -->
+    {% include 'admin/navbar.html' %}
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+    {% include 'admin/aside.html' %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'pixabay:basehome' %}">Home</a></li>
+<!--              <li class="breadcrumb-item active"><button type="button" class="btn btn-sm btn-success">Add More</button></li>-->
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-9">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Pixabay Processing</h3>
+                <h2 class="text-right">
+                <a href="{% url 'pixabay:index' %}" class="btn btn-sm  btn-center"
+                   style="Background-color:Green; color:white; box-shadow: 4px 4px 6px grey; "><small>To Pixabay</small>
+                </a>
+              </h2>
+              </div>
+
+              <!-- /.card-header -->
+              <div class="card-body p-0">
+                <table class="table table-condensed">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">ID</th>
+                      <th>Image</th>
+                      <th>Image Caption</th>
+                      <th style="width: 40px">Action</th>
+                    </tr>
+                  </thead>
+                   {% for UploadFile in object_list %}
+                  <tbody>
+                    <tr>
+                      <td>{{ UploadFile.id }}</td>
+                      <td><img src="{{ UploadFile.file_format.url }}" class="image-circle" width="50" height="50"></td>
+                      <td>{{ UploadFile.file_name }}</td>
+                      <td>
+                        <a class="btn btn-default btn-sm" href="{% url 'pixabay:edit' UploadFile.id %}"><i class="nav-icon fas fa-edit"></i></a>
+                           <button type="button" class="btn btn-outline-danger btn-xs" data-toggle="modal"
+                                   data-target="#exampleModal"  style="border-radius:8%"><i class="nav-icon fas fa-trash"></i></button>
+                      </td>
+                    </tr>
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body" >
+                          <small>
+                            <i>This is a permanent action. Are you sure?</i>
+                            <img src="{% static 'icons/error.png' %}" height="" width="30">
+                          </small>
+                        </div>
+                        <div class="modal-footer" >
+                          <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><small>Not now</small></button>
+                          <form action="{% url 'pixabay:delete' pk=UploadFile.pk %}" method="POST">
+                            {% csrf_token %}
+                            <a  href="{% url 'pixabay:delete' UploadFile.id %}" class="btn btn-danger btn-sm" type="Button"><small>Delete</small></a>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </tbody>
+                  {% endfor %}
+                </table>
+              </div>
+
+              <h2 class="text-right">
+                <a href="{{request.META.HTTP_REFERER}}" class="btn btn-sm  btn-center"
+                   style="Background-color:Violet; color:white; box-shadow: 4px 4px 6px grey; "><small>Go Back &raquo;</small>
+                </a>
+              </h2>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+    {% include 'admin/footer.html' %}
+</div>
+{% include 'admin/script.html' %}
+{% endblock %}

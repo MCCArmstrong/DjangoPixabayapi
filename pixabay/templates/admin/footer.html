@@ -1,0 +1,9 @@
+{% load static %}
+{% load i18n %}
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    {% now "Y" as current_year %}
+   {% blocktrans %} Copyright &copy; {{ current_year }} <a href="#">Pixabay</a>.{% endblocktrans %}
+    All rights reserved.
+  </footer>
+
